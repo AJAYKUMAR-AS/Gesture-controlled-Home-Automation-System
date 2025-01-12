@@ -1,0 +1,109 @@
+# Gesture Controlled Home Automation System
+
+## Overview
+The **Gesture Controlled Home Automation System** enables touch-free control of home appliances using hand gestures. Using a **Raspberry Pi** along with a **Pi Camera**, this system recognizes hand gestures and controls devices such as LEDs accordingly. The project is an innovative application of **computer vision** and **gesture recognition**, which makes it easy and hygienic to operate appliances without physical touch.
+
+## Objective
+The primary objective of this project is to create an intuitive, hands-free solution for home automation, allowing users to control devices with simple hand gestures. The system detects the number of fingers raised and interprets these gestures to turn on or off connected appliances like LEDs.
+
+## Libraries Used
+- **cv2**: For image processing and displaying the video feed.
+- **cvzone.HandTrackingModule**: For detecting and analyzing hand gestures.
+- **picamera2**: To capture images from the Raspberry Pi camera.
+- **gpiozero.LED**: To control LEDs connected to GPIO pins.
+- **time.sleep**: For creating delays when needed.
+
+## Hardware Requirements
+- **Raspberry Pi**: A small, affordable computer to run the system.
+- **Pi Camera**: For capturing live video of the user's hand gestures.
+- **LEDs**: Three LEDs connected to GPIO pins (17, 18, 27) with appropriate resistors to visualize the system's output.
+- **Resistors**: To limit the current flowing through the LEDs and protect them from damage.
+- **Breadboard & Jumper Wires**: For easy connections.
+
+## Software Requirements
+- **Python 3**: The primary programming language.
+- **cv2**: For image and video processing.
+- **cvzone**: For hand gesture detection.
+- **gpiozero**: To control GPIO pins for LEDs.
+- **picamera2**: For interfacing with the Raspberry Pi camera module.
+
+### Install the required libraries:
+```bash
+pip install opencv-python
+pip install cvzone
+pip install gpiozero
+pip install picamera2
+Working Principle
+The Gesture Controlled Home Automation System works by capturing real-time video from the Pi Camera and analyzing the video feed using the cvzone HandTrackingModule. It detects hand gestures and determines the number of fingers held up. Each unique gesture corresponds to specific actions such as turning on or off LEDs.
+
+Gesture Recognition Logic
+5 Fingers Up → Turn on LED1.
+1 Finger Up → Turn off LED1.
+3 Fingers Up → Turn on LED2.
+3 Fingers Down → Turn off LED2.
+2 Fingers Up → Turn on LED3.
+1 Finger Down → Turn off LED3.
+Step-by-Step Process
+1. Setting Up the Raspberry Pi
+Set up your Raspberry Pi with Raspbian OS installed.
+Connect the Pi Camera to the Raspberry Pi.
+Attach three LEDs to GPIO pins (17, 18, 27) and connect them to the breadboard with resistors.
+2. Installing Dependencies
+Install the required libraries for image processing and hand gesture detection:
+
+bash
+Copy code
+pip install opencv-python
+pip install cvzone
+pip install gpiozero
+pip install picamera2
+3. Initializing the Camera
+The Picamera2 library is used to capture real-time video from the Pi Camera. It is initialized to capture video in RGB format.
+
+python
+Copy code
+picam2 = Picamera2()
+picam2.preview_configuration.main.size = (720, 560)
+picam2.preview_configuration.main.format = "RGB"
+picam2.configure("preview")
+picam2.start()
+4. Hand Gesture Detection
+The HandDetector from cvzone is initialized to detect hands in the video feed. It can detect up to 2 hands, tracking the position of the fingers and palm.
+
+python
+Copy code
+detector = HandDetector(maxHands=2, detectionCon=0.5, minTrackCon=0.5)
+5. Controlling LEDs Based on Gestures
+For each hand detected, the system counts the number of fingers held up. Based on this count, the system controls the state of the LEDs.
+
+5 Fingers Up → turns on LED1.
+1 Finger Up → turns off LED1.
+3 Fingers Up → turns on LED2.
+3 Fingers Down → turns off LED2.
+2 Fingers Up → turns on LED3.
+1 Finger Down → turns off LED3.
+Example code to detect and control LED:
+
+python
+Copy code
+if count_1 == 5:
+    led1.on()
+elif count_0 == 4:
+    led1.off()
+6. Displaying the Video Feed
+The processed video feed is displayed with hand landmarks and the thumb tip highlighted for visual feedback. The system provides real-time feedback about the detected gesture.
+
+python
+Copy code
+cv2.imshow("im", im)
+7. Exiting the Program
+The program runs in a loop until the user presses the "q" key. At that point, the program stops and closes the video feed window.
+
+python
+Copy code
+key = cv2.waitKey(1) & 0xFF
+if key == ord("q"):
+    cv2.destroyAllWindows()
+    break
+Conclusion
+This Gesture Controlled Home Automation System demonstrates how Raspberry Pi and computer vision can be used to create a hands-free, intuitive solution for controlling home appliances. By leveraging the power of gesture recognition, the project enhances interactivity, convenience, and accessibility for users in smart home environments.
